@@ -11,12 +11,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-public class DatabaseUserDetailsService implements UserDetailsService {
-
-    public static final String CORP_SPLIT = "#";
+public class RepoUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -25,13 +25,6 @@ public class DatabaseUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         String corpCode = obtainCorpCode(username);
-        if (Strings.isNullOrEmpty(corpCode)) {
-            throw new CorpNotFoundException("not found corp");
-        }
-
-        if (username != null && username.contains(CORP_SPLIT)) {
-            username = username.split("#")[1];
-        }
         User user = userRepository.findByUsernameAndCorpCode(username, corpCode);
         if (user == null) {
             throw new UsernameNotFoundException("Not found user " + username);
@@ -40,19 +33,23 @@ public class DatabaseUserDetailsService implements UserDetailsService {
                 AuthorityUtils.createAuthorityList("ROLE_USER"));
     }
 
-    protected String obtainCorpCode(String username) {
-        if (username != null && username.contains(CORP_SPLIT)) {
-            return username.split("#")[0];
-        } else {
-            RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-            if (requestAttributes != null) {
-                if (requestAttributes instanceof ServletRequestAttributes) {
-                    HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-                    return request.getParameter("corpCode");
+    protected String obtainCorpCode(final String username) {
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        String corpCode = null;
+        if (requestAttributes != null) {
+            if (requestAttributes instanceof ServletRequestAttributes) {
+                HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+                corpCode = request.getParameter(CustomUserDetails.CORP_CODE_REQUEST_PARAMETER);
+
+                if (Strings.isNullOrEmpty(corpCode)) {
+                    Cookie cookie = WebUtils.getCookie(request, CustomUserDetails.CORP_CODE_COOKIE);
+                    if (cookie != null) {
+                        corpCode = cookie.getValue();
+                    }
                 }
             }
         }
 
-        return null;
+        return corpCode;
     }
 }

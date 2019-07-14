@@ -7,8 +7,9 @@ import java.util.Collection;
 
 public class CustomUserDetails extends User {
 
+    public static final String CORP_CODE_REQUEST_PARAMETER = "corpCode";
+    public static final String CORP_CODE_COOKIE = "corp_code";
     private static final long serialVersionUID = 8063484673226426535L;
-
     private final Long id;
 
     private final String corpCode;

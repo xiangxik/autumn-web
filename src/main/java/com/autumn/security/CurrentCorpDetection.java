@@ -32,7 +32,8 @@ public class CurrentCorpDetection implements CorpDetection {
             if (authentication != null) {
                 Object principal = authentication.getPrincipal();
                 if (principal instanceof CustomUserDetails) {
-                    return ((CustomUserDetails) principal).getCorpCode();
+                    corpCode = ((CustomUserDetails) principal).getCorpCode();
+                    setCorpCode(corpCode);
                 }
             }
 

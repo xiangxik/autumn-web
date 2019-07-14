@@ -1,0 +1,29 @@
+package com.autumn.security;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.web.util.CookieGenerator;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class EnhanceSavedRequestAwareAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+
+    private CookieGenerator cookieGenerator = new CookieGenerator();
+
+    public EnhanceSavedRequestAwareAuthenticationSuccessHandler() {
+        cookieGenerator.setCookieName(CustomUserDetails.CORP_CODE_COOKIE);
+        cookieGenerator.setCookieMaxAge(1209600 * 1000);
+    }
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUserDetails) {
+            cookieGenerator.addCookie(response, ((CustomUserDetails) principal).getCorpCode());
+        }
+        super.onAuthenticationSuccess(request, response, authentication);
+    }
+}

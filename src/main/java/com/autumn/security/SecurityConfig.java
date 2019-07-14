@@ -9,9 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.RememberMeServices;
-
-import java.util.UUID;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @EnableWebSecurity
 @Configuration
@@ -20,7 +18,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().headers().frameOptions().disable().and().authorizeRequests().antMatchers("/static/**", "/favicon.ico").permitAll()
-                .anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().rememberMe().rememberMeServices(rememberMeServices()).and().logout().permitAll();
+                .anyRequest().authenticated().and().formLogin().loginPage("/login").successHandler(authenticationSuccessHandler()).permitAll().and().rememberMe().and().logout().permitAll();
 
     }
 
@@ -30,8 +28,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new EnhanceSavedRequestAwareAuthenticationSuccessHandler();
+    }
+
+    @Bean
     public UserDetailsService userDetailsService() {
-        return new DatabaseUserDetailsService();
+        return new RepoUserDetailsService();
     }
 
     @Bean
@@ -39,8 +42,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public RememberMeServices rememberMeServices() {
-        return new CorpRememberMeServices(UUID.randomUUID().toString(), userDetailsService());
-    }
 }
