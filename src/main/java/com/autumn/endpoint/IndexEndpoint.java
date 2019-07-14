@@ -11,8 +11,8 @@ public class IndexEndpoint {
         return "/index";
     }
 
-    @GetMapping({"/home", "/index"})
-    public String homePage() {
-        return "/home";
+    @GetMapping({"/home/console"})
+    public String consolePage() {
+        return "/home/console";
     }
 }

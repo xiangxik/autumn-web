@@ -16,17 +16,22 @@ import javax.servlet.http.HttpServletRequest;
 
 public class DatabaseUserDetailsService implements UserDetailsService {
 
+    public static final String CORP_SPLIT = "#";
+
     @Autowired
     private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        String corpCode = obtainCorpCode();
+        String corpCode = obtainCorpCode(username);
         if (Strings.isNullOrEmpty(corpCode)) {
             throw new CorpNotFoundException("not found corp");
         }
 
+        if (username != null && username.contains(CORP_SPLIT)) {
+            username = username.split("#")[1];
+        }
         User user = userRepository.findByUsernameAndCorpCode(username, corpCode);
         if (user == null) {
             throw new UsernameNotFoundException("Not found user " + username);
@@ -35,14 +40,19 @@ public class DatabaseUserDetailsService implements UserDetailsService {
                 AuthorityUtils.createAuthorityList("ROLE_USER"));
     }
 
-    protected String obtainCorpCode() {
-        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        if (requestAttributes != null) {
-            if (requestAttributes instanceof ServletRequestAttributes) {
-                HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-                return request.getParameter("corpCode");
+    protected String obtainCorpCode(String username) {
+        if (username != null && username.contains(CORP_SPLIT)) {
+            return username.split("#")[0];
+        } else {
+            RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+            if (requestAttributes != null) {
+                if (requestAttributes instanceof ServletRequestAttributes) {
+                    HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+                    return request.getParameter("corpCode");
+                }
             }
         }
+
         return null;
     }
 }
