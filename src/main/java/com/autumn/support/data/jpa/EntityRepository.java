@@ -9,4 +9,6 @@ import java.io.Serializable;
 @NoRepositoryBean
 public interface EntityRepository<T, I extends Serializable> extends JpaRepository<T, I>, QuerydslPredicateExecutor<T> {
 
+    T createNew();
+
 }

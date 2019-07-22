@@ -1,9 +1,9 @@
 package com.autumn;
 
 import com.autumn.modules.core.entity.Corp;
-import com.autumn.security.CurrentCorpDetection;
 import com.autumn.modules.core.service.CorpService;
 import com.autumn.modules.core.service.MenuItemService;
+import com.autumn.security.CurrentCorpDetection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;

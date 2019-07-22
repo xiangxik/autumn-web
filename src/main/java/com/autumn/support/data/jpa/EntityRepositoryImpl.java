@@ -170,4 +170,12 @@ public class EntityRepositoryImpl<T, I extends Serializable> extends QuerydslJpa
     }
 
 
+    @Override
+    public T createNew() {
+        try {
+            return getDomainClass().newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

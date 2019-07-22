@@ -103,7 +103,7 @@
                                 <a lay-href="home/console">控制台</a>
                             </dd>
                             <dd data-name="console">
-                                <a lay-href="home/homepage1.html">主页一</a>
+                                <a th:lay-href="@{/user}">主页一</a>
                             </dd>
                             <dd data-name="console">
                                 <a lay-href="home/homepage2.html">主页二</a>
@@ -471,9 +471,12 @@
 </div>
 
 <script th:src="@{/static/layui/layui.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    var base = /*[[${#httpServletRequest.getContextPath()}]]*/"";
+</script>
 <script>
     layui.config({
-        base: './static/' //静态资源所在路径
+        base: base + '/static/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use('index');

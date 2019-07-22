@@ -4,6 +4,7 @@ import com.autumn.support.data.Disabledable;
 import com.autumn.support.data.Lockedable;
 import com.autumn.support.data.LogicDeleteable;
 import com.autumn.support.data.jpa.CorpEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,6 +19,7 @@ public class User extends CorpEntity<Long> implements Lockedable, Disabledable, 
     @Column(length = 100)
     private String username;
 
+    @JsonIgnore
     @Column(length = 225)
     private String password;
 
