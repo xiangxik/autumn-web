@@ -40,6 +40,12 @@ public abstract class CrudController<T, I extends Serializable> extends BaseCont
         return getViewDir() + "/index";
     }
 
+    @GetMapping("list")
+    public String list(Model model) {
+        onShowListPage(model);
+        return getViewDir() + "/list";
+    }
+
     @GetMapping("/select")
     public String select(Model model) {
         return getViewDir() + "/select";
@@ -100,6 +106,9 @@ public abstract class CrudController<T, I extends Serializable> extends BaseCont
     }
 
     protected void onShowIndexPage(Model model) {
+    }
+
+    protected void onShowListPage(Model model) {
     }
 
     protected void onShowEditPage(T entity, Model model) {

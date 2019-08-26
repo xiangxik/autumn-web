@@ -10,7 +10,6 @@ import java.util.List;
 
 public class TreeRepositoryImpl<T extends TreeEntity<T, I>, I extends Serializable> extends EntityRepositoryImpl<T, I> implements TreeRepository<T, I> {
 
-
     public TreeRepositoryImpl(CorpDetection corpDetection, JpaEntityInformation<T, I> entityInformation, EntityManager entityManager) {
         super(corpDetection, entityInformation, entityManager);
     }

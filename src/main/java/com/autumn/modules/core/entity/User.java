@@ -4,7 +4,9 @@ import com.autumn.support.data.Disabledable;
 import com.autumn.support.data.Lockedable;
 import com.autumn.support.data.LogicDeleteable;
 import com.autumn.support.data.jpa.CorpEntity;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tbl_user")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class User extends CorpEntity<Long> implements Lockedable, Disabledable, LogicDeleteable {
 
     @NotNull

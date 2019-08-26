@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class EnhanceSavedRequestAwareAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+public class CorpCodeSavedRequestAwareAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     private CookieGenerator cookieGenerator = new CookieGenerator();
 
-    public EnhanceSavedRequestAwareAuthenticationSuccessHandler() {
+    public CorpCodeSavedRequestAwareAuthenticationSuccessHandler() {
         cookieGenerator.setCookieName(CustomUserDetails.CORP_CODE_COOKIE);
         cookieGenerator.setCookieMaxAge(1209600 * 1000);
     }

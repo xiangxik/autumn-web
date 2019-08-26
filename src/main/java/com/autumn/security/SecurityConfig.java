@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new EnhanceSavedRequestAwareAuthenticationSuccessHandler();
+        return new CorpCodeSavedRequestAwareAuthenticationSuccessHandler();
     }
 
     @Bean

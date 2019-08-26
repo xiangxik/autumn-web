@@ -2,6 +2,7 @@ package com.autumn.modules.core.entity;
 
 
 import com.autumn.support.data.jpa.DataEntity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
