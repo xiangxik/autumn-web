@@ -11,7 +11,7 @@ public class SpringLazyCorpDetection implements CorpDetection {
     @Override
     public String getCurrentCorpCode() {
         if (corpDetection == null) {
-            synchronized (corpDetection) {
+            synchronized (this) {
                 if (corpDetection == null) {
                     ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
                     corpDetection = context.getBean(CorpDetection.class);
